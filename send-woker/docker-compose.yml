@@ -10,3 +10,14 @@ services:
       # https://www.rabbitmq.com/configure.html#supported-environment-variables
       RABBITMQ_DEFAULT_USER: "admin"
       RABBITMQ_DEFAULT_PASS: "admin"
+  db:
+    image: library/mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=testdb
+    container_name: mysql-container
+    ports:
+      - "3306:3306"
