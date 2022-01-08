@@ -1,7 +1,6 @@
 package com.example.processorworker
 
 import com.example.processorworker.sample.SampleJob
-import com.example.processorworker.sample.SampleJobService
 import org.quartz.JobDetail
 import org.quartz.SimpleTrigger
 import org.quartz.Trigger

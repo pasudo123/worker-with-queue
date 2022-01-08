@@ -12,9 +12,10 @@ import org.springframework.stereotype.Component
  * 만약 잡이 트리거 되어 실행되면, 스케줄러는 execute() 를 실행한다. 그리고 JobExecutionContext 전달한다.
  *
  * JobExecutionContext 는 런타임환경에서 잡 인스턴스에 대한 정보를 제공한다.
+ * JobInstance 를 사전에 등록할 때, 생성자 주입을 할 시 에러가 발생한다.
  */
 @Component
-class SampleJob: Job {
+class SampleJob : Job {
 
     @Autowired
     private lateinit var sampleJobService: SampleJobService
