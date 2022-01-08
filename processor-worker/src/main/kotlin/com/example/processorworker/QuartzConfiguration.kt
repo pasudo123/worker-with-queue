@@ -1,10 +1,13 @@
 package com.example.processorworker
 
 import com.example.processorworker.sample.SampleJob
+import com.example.processorworker.sample.SampleJobService
 import org.quartz.JobDetail
 import org.quartz.SimpleTrigger
 import org.quartz.Trigger
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.quartz.QuartzProperties
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,6 +15,7 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean
 import org.springframework.scheduling.quartz.SchedulerFactoryBean
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean
 import org.springframework.scheduling.quartz.SpringBeanJobFactory
+import java.util.*
 
 /**
  * [JobDetail]
@@ -42,8 +46,10 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory
  * - 2) Spring ScheduleFactoryBean 로 제공되는 방식
  */
 @Configuration
+@ConfigurationProperties(prefix = "spring.quartz.properties")
 class QuartzConfiguration(
-    private val applicationContext: ApplicationContext
+    private val applicationContext: ApplicationContext,
+    private val quartzProperties: QuartzProperties
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -82,6 +88,7 @@ class QuartzConfiguration(
     fun simpleTriggerFactoryBean(jobDetail: JobDetail): SimpleTriggerFactoryBean {
         log.info("#### simpleTriggerFactoryBean ####")
         return SimpleTriggerFactoryBean().apply {
+            this.setStartDelay(2000L)
             this.setJobDetail(jobDetail)
             // TODO 주기는 단위가 얼마인가?
             this.setRepeatInterval(3600000)
@@ -94,6 +101,7 @@ class QuartzConfiguration(
     fun scheduleFactoryBean(trigger: Trigger, jobDetail: JobDetail): SchedulerFactoryBean {
         log.info("#### scheduleFactoryBean ####")
         return SchedulerFactoryBean().apply {
+            this.setQuartzProperties(quartzProperties.properties.toProperties())
             this.setJobFactory(springBeanJobFactory())
             this.setJobDetails(jobDetail)
             this.setTriggers(trigger)

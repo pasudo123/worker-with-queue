@@ -3,6 +3,7 @@ package com.example.processorworker.sample
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
@@ -13,9 +14,10 @@ import org.springframework.stereotype.Component
  * JobExecutionContext 는 런타임환경에서 잡 인스턴스에 대한 정보를 제공한다.
  */
 @Component
-class SampleJob(
-    private val sampleJobService: SampleJobService
-) : Job {
+class SampleJob: Job {
+
+    @Autowired
+    private lateinit var sampleJobService: SampleJobService
 
     private val log = LoggerFactory.getLogger(javaClass)
 

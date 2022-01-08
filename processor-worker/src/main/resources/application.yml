@@ -9,4 +9,5 @@ spring:
     properties:
       # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/ConfigMain.html 참고
       org.quartz.threadPool.threadCount: 3
-      org.quartz.scheduler.instanceName: p-instance
+      org.quartz.scheduler.threadName: ppp-thr
+      org.quartz.scheduler.instanceName: ppp-ins

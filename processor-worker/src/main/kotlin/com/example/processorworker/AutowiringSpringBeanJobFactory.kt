@@ -12,7 +12,7 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory
 class AutowiringSpringBeanJobFactory : SpringBeanJobFactory(), ApplicationContextAware {
 
     // not serialized
-//    @Transient
+    @Transient
     private lateinit var beanFactory: AutowireCapableBeanFactory
 
     override fun setApplicationContext(applicationContext: ApplicationContext) {
@@ -21,8 +21,8 @@ class AutowiringSpringBeanJobFactory : SpringBeanJobFactory(), ApplicationContex
 
     @Throws(Exception::class)
     override fun createJobInstance(bundle: TriggerFiredBundle): Any {
-        val job = super.createJobInstance(bundle).let { currentJob ->
-            beanFactory.autowireBean(currentJob)
+        val job = super.createJobInstance(bundle).also {
+            beanFactory.autowireBean(it)
         }
 
         return job
