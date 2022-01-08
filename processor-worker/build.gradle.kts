@@ -1,10 +1,24 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.8"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    kotlin("jvm") version "1.5.32"
-    kotlin("plugin.spring") version "1.5.32"
+    val kotlinVersion = System.getProperty("version.kotlin")
+    val springBootVersion = System.getProperty("version.springboot")
+    val springBootManagementVersion = System.getProperty("version.springbootManagement")
+    val default = System.getProperty("version.default", "1.0.0")
+
+    val versions = StringBuilder()
+    versions.appendLine("=======================")
+    versions.appendLine("kotlin = $kotlinVersion")
+    versions.appendLine("springboot = $springBootVersion")
+    versions.appendLine("springboot-management = $springBootManagementVersion")
+    versions.appendLine("default = $default")
+    versions.appendLine("=======================")
+    println(versions.toString())
+
+    id("org.springframework.boot") version springBootVersion
+    id("io.spring.dependency-management") version springBootManagementVersion
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.spring") version kotlinVersion
 }
 
 group = "com.example"
