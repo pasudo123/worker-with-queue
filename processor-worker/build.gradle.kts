@@ -4,7 +4,8 @@ plugins {
     val kotlinVersion = System.getProperty("version.kotlin")
     val springBootVersion = System.getProperty("version.springboot")
     val springBootManagementVersion = System.getProperty("version.springbootManagement")
-    val default = System.getProperty("version.default", "1.0.0")
+    val default = System.getProperty("version.default")
+    default.toString()
 
     val versions = StringBuilder()
     versions.appendLine("=======================")
@@ -13,7 +14,6 @@ plugins {
     versions.appendLine("springboot-management = $springBootManagementVersion")
     versions.appendLine("default = $default")
     versions.appendLine("=======================")
-    println(versions.toString())
 
     id("org.springframework.boot") version springBootVersion
     id("io.spring.dependency-management") version springBootManagementVersion
@@ -30,7 +30,14 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
     implementation("org.springframework.boot:spring-boot-starter-quartz")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+
+    runtimeOnly("mysql:mysql-connector-java")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

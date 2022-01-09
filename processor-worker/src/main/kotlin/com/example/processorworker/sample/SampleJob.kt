@@ -24,7 +24,9 @@ class SampleJob : Job {
 
     override fun execute(context: JobExecutionContext) {
         log.info("job [{}] fired : {}", context.jobDetail.key.name, context.fireTime)
+        log.info("=> current value : {}", sampleJobService.getNumberOfInvocation())
         sampleJobService.executeSampleJob()
         log.info("job [{}] executed : {}", context.jobDetail.key.name, context.nextFireTime)
+        log.info("=> current value : {}", sampleJobService.getNumberOfInvocation())
     }
 }

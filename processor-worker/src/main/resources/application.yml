@@ -3,11 +3,44 @@ server:
   port: 44440
 
 spring:
+
+  datasource:
+    url: jdbc:mysql://dockerhost:13350/testdb
+    username: root
+    password: rootpass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   quartz:
-    job-store-type: memory
+    # job-store-type: memory
+    job-store-type: jdbc
     scheduler-name: p-quartz-scheduler
     properties:
-      # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/ConfigMain.html 참고
+      # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/#choose-a-topic: 참고
       org.quartz.threadPool.threadCount: 3
       org.quartz.scheduler.threadName: ppp-thr
       org.quartz.scheduler.instanceName: ppp-ins
+      org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
+      org.quartz.jobStore.dataSource: quartzDataSource
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/ConfigDataSources.html
+      # dataSource.{anything-name}.(URL | user | password)
+      org.quartz.dataSource.quartzDataSource.provider: hikaricp # hikaricp 없으면 다른 provider 를 임포트 해주던가 해야함.
+      org.quartz.dataSource.quartzDataSource.driver: com.mysql.cj.jdbc.Driver
+      org.quartz.dataSource.quartzDataSource.URL: jdbc:mysql://dockerhost:13350/testdb
+      org.quartz.dataSource.quartzDataSource.user: root
+      org.quartz.dataSource.quartzDataSource.password: rootpass
+
+    jdbc:
+      initialize-schema: never
+      platform: mysql
+
+
+  mail:
+    host: smtp.naver.com
+    port: 587
+    username: pasudo123@naver.com
+    # naver password 참고 : https://help.naver.com/support/contents/contents.help?serviceNo=532&categoryNo=11047
+    password:
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true

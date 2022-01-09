@@ -6,3 +6,4 @@
 
 # reference
 * https://www.baeldung.com/spring-quartz-schedule
+* https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#io.quartz

@@ -1,0 +1,14 @@
+### send email with schedule
+POST {{host}}/email
+Content-Type: application/json
+
+{
+  "email": "pasudo123@naver.com",
+  "subject": "hello quartz~~~",
+  "body": "hello quartz test",
+  "dateTime": "2022-01-09T19:07:00",
+  "zoneId": "Asia/Seoul"
+}
+
+###
+GET {{host}}/email

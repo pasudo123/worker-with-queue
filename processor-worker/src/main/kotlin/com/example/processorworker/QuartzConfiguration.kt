@@ -53,16 +53,6 @@ class QuartzConfiguration(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-//    @Bean
-//    fun jobDetail(): JobDetail {
-//        // build style jobDetail Entities 를 제공
-//        return JobBuilder.newJob().ofType(SampleJob::class.java)
-//            .storeDurably()
-//            .withIdentity("pasudo_quartz_job_detail")
-//            .withDescription("invoke sample job service ...")
-//            .build()
-//    }
-
     @Bean
     fun jobDetailFactoryBean(): JobDetailFactoryBean {
         log.info("#### JobDetailFactoryBean ####")
@@ -73,15 +63,6 @@ class QuartzConfiguration(
             this.setDurability(true)
         }
     }
-
-//    @Bean
-//    fun trigger(jobDetail: JobDetail): Trigger {
-//        return TriggerBuilder.newTrigger().forJob(jobDetail).apply {
-//            this.withIdentity("pasudo_trigger")
-//            this.withDescription("sample_trigger")
-//            this.withSchedule(CronScheduleBuilder.cronSchedule("*/10 * * * * *"))
-//        }.build()
-//    }
 
     @Bean
     fun simpleTriggerFactoryBean(jobDetail: JobDetail): SimpleTriggerFactoryBean {
