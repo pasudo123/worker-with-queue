@@ -1,11 +1,9 @@
-package com.example.processorworker.email.api
+package com.example.processorworker.email
 
-import org.springframework.validation.annotation.Validated
 import javax.validation.constraints.Email
 
 class EmailResource {
 
-    @Validated
     data class Request(
         @field:Email
         val email: String,

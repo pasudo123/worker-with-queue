@@ -1,6 +1,5 @@
-package com.example.processorworker.email.api
+package com.example.processorworker.email
 
-import com.example.processorworker.email.service.EmailService
 import org.quartz.Scheduler
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -19,7 +18,6 @@ class EmailController(
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
-
 
     @PostMapping
     fun addEmailSchedule(

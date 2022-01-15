@@ -1,8 +1,7 @@
-package com.example.processorworker.email.service
+package com.example.processorworker.email.job
 
 import org.quartz.JobExecutionContext
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.mail.MailProperties
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -12,13 +11,10 @@ import java.nio.charset.StandardCharsets
 import javax.mail.internet.MimeMessage
 
 @Component
-class EmailJob : QuartzJobBean() {
-
-    @Autowired
-    private lateinit var mailSender: JavaMailSender
-
-    @Autowired
-    private lateinit var mailProperties: MailProperties
+class EmailJob(
+    private val mailSender: JavaMailSender,
+    private val mailProperties: MailProperties
+) : QuartzJobBean() {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -50,7 +46,7 @@ class EmailJob : QuartzJobBean() {
                 }
 
             mailSender.send(message)
-            log.info("mail send success")
+            log.info("===== mail send success =====")
         } catch (exception: Exception) {
             log.error("send email error : ${exception.message}")
         }

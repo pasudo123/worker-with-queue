@@ -1,14 +1,13 @@
-package com.example.processorworker.email.service
+package com.example.processorworker.email
 
-import com.example.processorworker.email.api.EmailResource
+import com.example.processorworker.buildEmailTypeJobData
+import com.example.processorworker.email.job.EmailJob
 import org.quartz.JobBuilder
-import org.quartz.JobDataMap
 import org.quartz.JobDetail
 import org.quartz.SimpleScheduleBuilder
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
@@ -16,12 +15,8 @@ import java.util.*
 @Service
 class EmailService {
 
-    fun buildJobDetail(emailRequest: EmailResource.Request): JobDetail {
-        val jobDataMap = JobDataMap().apply {
-            this["email"] = emailRequest.email
-            this["subject"] = emailRequest.subject
-            this["body"] = emailRequest.body
-        }
+    fun buildJobDetail(request: EmailResource.Request): JobDetail {
+        val jobDataMap = buildEmailTypeJobData(request)
 
         return JobBuilder.newJob(EmailJob::class.java)
             .withIdentity(UUID.randomUUID().toString(), "email-jobs")
@@ -32,8 +27,9 @@ class EmailService {
     }
 
     fun buildTrigger(jobDetail: JobDetail): Trigger {
-        val startAt = LocalDateTime.now().plusSeconds(10)
-        val zonedDateTime = ZonedDateTime.of(startAt, ZoneId.of("Asia/Seoul"))
+        val zonedDateTime = ZonedDateTime
+            .now(ZoneId.of("Asia/Seoul"))
+            .plusSeconds(10)
 
         return TriggerBuilder.newTrigger()
             .forJob(jobDetail)
