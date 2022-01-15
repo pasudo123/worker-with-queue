@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.time.ZonedDateTime
 import javax.validation.Valid
 
 @RestController
@@ -27,18 +26,8 @@ class EmailController(
         @Valid @RequestBody emailRequest: EmailResource.Request
     ): ResponseEntity<EmailResource.Response> {
         try {
-            val dateTime = ZonedDateTime.of(emailRequest.dateTime, emailRequest.zoneId)
-
-            if (dateTime.isBefore(ZonedDateTime.now())) {
-                val response = EmailResource.Response(false, "datetime must be after current time.")
-
-                return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(response)
-            }
-
             val jobDetail = emailService.buildJobDetail(emailRequest)
-            val trigger = emailService.buildTrigger(jobDetail, dateTime)
+            val trigger = emailService.buildTrigger(jobDetail)
 
             scheduler.scheduleJob(jobDetail, trigger)
 

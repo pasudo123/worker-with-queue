@@ -1,19 +1,12 @@
 package com.example.processorworker
 
-import com.example.processorworker.sample.SampleJob
 import org.quartz.JobDetail
-import org.quartz.SimpleTrigger
 import org.quartz.Trigger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.quartz.QuartzProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationContext
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.quartz.JobDetailFactoryBean
-import org.springframework.scheduling.quartz.SchedulerFactoryBean
-import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean
-import org.springframework.scheduling.quartz.SpringBeanJobFactory
 import java.util.*
 
 /**
@@ -46,53 +39,53 @@ import java.util.*
  */
 @Configuration
 @ConfigurationProperties(prefix = "spring.quartz.properties")
-class QuartzConfiguration(
+class QuartzLegacyConfiguration(
     private val applicationContext: ApplicationContext,
     private val quartzProperties: QuartzProperties
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @Bean
-    fun jobDetailFactoryBean(): JobDetailFactoryBean {
-        log.info("#### JobDetailFactoryBean ####")
-        // bean style : JobDetail 인스턴스를 빈으로 제공해준다.
-        return JobDetailFactoryBean().apply {
-            this.setJobClass(SampleJob::class.java)
-            this.setDescription("invoke sample job service...")
-            this.setDurability(true)
-        }
-    }
-
-    @Bean
-    fun simpleTriggerFactoryBean(jobDetail: JobDetail): SimpleTriggerFactoryBean {
-        log.info("#### simpleTriggerFactoryBean ####")
-        return SimpleTriggerFactoryBean().apply {
-            this.setStartDelay(2000L)
-            this.setJobDetail(jobDetail)
-            // TODO 주기는 단위가 얼마인가?
-            this.setRepeatInterval(3600000)
-            // 무한반복
-            this.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY)
-        }
-    }
-
-    @Bean
-    fun scheduleFactoryBean(trigger: Trigger, jobDetail: JobDetail): SchedulerFactoryBean {
-        log.info("#### scheduleFactoryBean ####")
-        return SchedulerFactoryBean().apply {
-            this.setQuartzProperties(quartzProperties.properties.toProperties())
-            this.setJobFactory(springBeanJobFactory())
-            this.setJobDetails(jobDetail)
-            this.setTriggers(trigger)
-        }
-    }
-
-    @Bean
-    fun springBeanJobFactory(): SpringBeanJobFactory {
-        log.info("#### springBeanJobFactory ####")
-        return AutowiringSpringBeanJobFactory().apply {
-            this.setApplicationContext(applicationContext)
-        }
-    }
+//    @Bean
+//    fun jobDetailFactoryBean(): JobDetailFactoryBean {
+//        log.info("#### JobDetailFactoryBean ####")
+//        // bean style : JobDetail 인스턴스를 빈으로 제공해준다.
+//        return JobDetailFactoryBean().apply {
+//            this.setJobClass(SampleJob::class.java)
+//            this.setDescription("invoke sample job service...")
+//            this.setDurability(true)
+//        }
+//    }
+//
+//    @Bean
+//    fun simpleTriggerFactoryBean(jobDetail: JobDetail): SimpleTriggerFactoryBean {
+//        log.info("#### simpleTriggerFactoryBean ####")
+//        return SimpleTriggerFactoryBean().apply {
+//            this.setStartDelay(2000L)
+//            this.setJobDetail(jobDetail)
+//            // TODO 주기는 단위가 얼마인가?
+//            this.setRepeatInterval(3600000)
+//            // 무한반복
+//            this.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY)
+//        }
+//    }
+//
+//    @Bean
+//    fun scheduleFactoryBean(trigger: Trigger, jobDetail: JobDetail): SchedulerFactoryBean {
+//        log.info("#### scheduleFactoryBean ####")
+//        return SchedulerFactoryBean().apply {
+//            this.setQuartzProperties(quartzProperties.properties.toProperties())
+//            this.setJobFactory(springBeanJobFactory())
+//            this.setJobDetails(jobDetail)
+//            this.setTriggers(trigger)
+//        }
+//    }
+//
+//    @Bean
+//    fun springBeanJobFactory(): SpringBeanJobFactory {
+//        log.info("#### springBeanJobFactory ####")
+//        return AutowiringSpringBeanJobFactory().apply {
+//            this.setApplicationContext(applicationContext)
+//        }
+//    }
 }

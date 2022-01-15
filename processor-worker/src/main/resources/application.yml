@@ -1,4 +1,8 @@
 
+logging:
+  level:
+    org.quartz: DEBUG
+
 server:
   port: 44440
 
@@ -16,19 +20,30 @@ spring:
     scheduler-name: p-quartz-scheduler
     properties:
       # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/#choose-a-topic: 참고
-      org.quartz.threadPool.threadCount: 3
+      org.quartz.threadPool.threadCount: 5
+
+      # scheduler
       org.quartz.scheduler.threadName: ppp-thr
       org.quartz.scheduler.instanceName: ppp-ins
+      org.quartz.scheduler.instanceId: AUTO
+
+      # jobStore
       org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
-      org.quartz.jobStore.dataSource: quartzDataSource
       org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-      # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/ConfigDataSources.html
-      # dataSource.{anything-name}.(URL | user | password)
-      org.quartz.dataSource.quartzDataSource.provider: hikaricp # hikaricp 없으면 다른 provider 를 임포트 해주던가 해야함.
+      org.quartz.jobStore.dataSource: quartzDataSource
+      # org.quartz.jobStore.isClustered: true
+
+      # dataSource
       org.quartz.dataSource.quartzDataSource.driver: com.mysql.cj.jdbc.Driver
       org.quartz.dataSource.quartzDataSource.URL: jdbc:mysql://dockerhost:13350/testdb
       org.quartz.dataSource.quartzDataSource.user: root
       org.quartz.dataSource.quartzDataSource.password: rootpass
+      org.quartz.dataSource.quartzDataSource.provider: hikaricp # hikaricp 없으면 다른 provider 를 임포트 해주던가 해야함. (아니면 기본으로..)
+
+      # dataSource 를 hikari 로 사용하면 관련 설정도 같이 쓸 수 있다. : https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+      # org.quartz.dataSource.quartzDataSource.maximumPoolSize = 10
+      # org.quartz.dataSource.quartzDataSource.validationTimeout = 5000
+      # org.quartz.dataSource.quartzDataSource.idleTimeout = 0
 
     jdbc:
       initialize-schema: never

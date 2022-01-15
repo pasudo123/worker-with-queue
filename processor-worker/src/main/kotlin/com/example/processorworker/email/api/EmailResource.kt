@@ -1,8 +1,6 @@
 package com.example.processorworker.email.api
 
 import org.springframework.validation.annotation.Validated
-import java.time.LocalDateTime
-import java.time.ZoneId
 import javax.validation.constraints.Email
 
 class EmailResource {
@@ -12,9 +10,7 @@ class EmailResource {
         @field:Email
         val email: String,
         val subject: String,
-        val body: String,
-        val dateTime: LocalDateTime,
-        val zoneId: ZoneId
+        val body: String
     )
 
     data class Response(

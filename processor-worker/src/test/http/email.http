@@ -5,9 +5,7 @@ Content-Type: application/json
 {
   "email": "pasudo123@naver.com",
   "subject": "hello quartz~~~",
-  "body": "hello quartz test",
-  "dateTime": "2022-01-09T19:07:00",
-  "zoneId": "Asia/Seoul"
+  "body": "hello quartz test[2]"
 }
 
 ###

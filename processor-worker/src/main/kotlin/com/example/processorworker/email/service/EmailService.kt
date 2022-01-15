@@ -8,6 +8,8 @@ import org.quartz.SimpleScheduleBuilder
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
 
@@ -29,12 +31,15 @@ class EmailService {
             .build()
     }
 
-    fun buildTrigger(jobDetail: JobDetail, startAt: ZonedDateTime): Trigger {
+    fun buildTrigger(jobDetail: JobDetail): Trigger {
+        val startAt = LocalDateTime.now().plusSeconds(10)
+        val zonedDateTime = ZonedDateTime.of(startAt, ZoneId.of("Asia/Seoul"))
+
         return TriggerBuilder.newTrigger()
             .forJob(jobDetail)
             .withIdentity(jobDetail.key.name, "email-triggers")
             .withDescription("Send Email Trigger")
-            .startAt(Date.from(startAt.toInstant()))
+            .startAt(Date.from(zonedDateTime.toInstant()))
             .withSchedule(SimpleScheduleBuilder.simpleSchedule().withMisfireHandlingInstructionFireNow())
             .build()
     }
