@@ -17,6 +17,6 @@ Content-Type: application/json
 }
 
 
-### index sample schedule
+### retry job
 GET {{host}}/index/ex/hi
 Content-Type: application/json

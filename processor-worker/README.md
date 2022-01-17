@@ -29,6 +29,14 @@ If no matching bean property is found, the entry is by default simply ignored.
 This is analogous to QuartzJobBean's behavior.
 ```
 
+# JobExecutionContext.mergedJobDataMap
+* jobDetail 내의 JobDataMap 과 trigger 내의 JobDataMap 을 같이 들고올 수 있다.
+
+아래 두 내용을 합친 것이다.
+```kotlin
+context.trigger.jobDataMap + context.jobDetail.jobDataMap
+```
+
 # reference
 * https://www.baeldung.com/spring-quartz-schedule
 * https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#io.quartz

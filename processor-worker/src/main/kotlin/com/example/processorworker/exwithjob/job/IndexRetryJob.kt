@@ -22,6 +22,7 @@ class IndexRetryJob : QuartzJobBean() {
 
         try {
             // 에러 발생
+            log.info("[0] message : $message")
             val result = 10 / 0
             log.info("===> 여기까지 로그가 도달하지 못한다. <===")
         } catch (exception: Exception) {
@@ -31,8 +32,8 @@ class IndexRetryJob : QuartzJobBean() {
 
             // JobExecutionException 을 만들고, 작업을 즉시 재실행한다.
             val executionException = JobExecutionException(exception)
-            if (3 > sequence.get()) {
-                log.error("[2] JOB 을 retry 한다. : ${sequence.get()}")
+            if (sequence.get() <= 3) {
+                log.error("[2] JOB 을 retry 한다. : retry=${sequence.get()}")
                 executionException.setRefireImmediately(true)
                 throw executionException
             } else {
