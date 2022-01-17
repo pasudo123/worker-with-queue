@@ -50,12 +50,13 @@ spring:
       platform: mysql
 
 
+
   mail:
     host: smtp.naver.com
     port: 587
     username: pasudo123@naver.com
     # naver password 참고 : https://help.naver.com/support/contents/contents.help?serviceNo=532&categoryNo=11047
-    password:
+    password: 4MFBFW6SPSDC
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true

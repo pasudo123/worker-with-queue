@@ -15,3 +15,8 @@ Content-Type: application/json
 {
   "message": "Hello!! {{$uuid}}"
 }
+
+
+### index sample schedule
+GET {{host}}/index/ex/hi
+Content-Type: application/json

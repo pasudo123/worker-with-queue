@@ -23,6 +23,7 @@ class EmailController(
     fun addEmailSchedule(
         @Valid @RequestBody emailRequest: EmailResource.Request
     ): ResponseEntity<EmailResource.Response> {
+
         try {
             val jobDetail = emailService.buildJobDetail(emailRequest)
             val trigger = emailService.buildTrigger(jobDetail)

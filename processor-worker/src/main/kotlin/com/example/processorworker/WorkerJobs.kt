@@ -4,6 +4,12 @@ import com.example.processorworker.email.EmailResource
 import com.example.processorworker.push.PushResource
 import org.quartz.JobDataMap
 
+fun buildIndexTypeJobDate(message: String): JobDataMap {
+    return JobDataMap().apply {
+        this["message"] = message
+    }
+}
+
 fun buildPushTypeJobData(request: PushResource.Request): JobDataMap {
     return JobDataMap().apply {
         this["message"] = request.message
