@@ -17,16 +17,18 @@ import org.springframework.stereotype.Component
 @Component
 class SampleJob : Job {
 
-    @Autowired
-    private lateinit var sampleJobService: SampleJobService
-
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun execute(context: JobExecutionContext) {
-        log.info("job [{}] fired : {}", context.jobDetail.key.name, context.fireTime)
-        log.info("=> current value : {}", sampleJobService.getNumberOfInvocation())
-        sampleJobService.executeSampleJob()
-        log.info("job [{}] executed : {}", context.jobDetail.key.name, context.nextFireTime)
-        log.info("=> current value : {}", sampleJobService.getNumberOfInvocation())
+        val lines = StringBuilder()
+        lines.appendLine()
+        lines.appendLine("===================================")
+        lines.appendLine("job : ${context.jobDetail.key.name}")
+        lines.appendLine("fire-time : ${context.fireTime}")
+        lines.appendLine("execute-time : ${context.nextFireTime}")
+        lines.appendLine("===================================")
+        lines.appendLine()
+
+        log.info(lines.toString())
     }
 }

@@ -1,4 +1,4 @@
-package com.example.processorworker
+package com.example.processorworker.legacy
 
 import org.quartz.JobDetail
 import org.quartz.Trigger
@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.quartz.QuartzProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.quartz.SpringBeanJobFactory
 import java.util.*
 
 /**
