@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
  * JobInstance 를 사전에 등록할 때, 생성자 주입을 할 시 에러가 발생한다.
  */
 @Component
-class SampleJob : Job {
+class SampleJobVersion2 : Job {
 
     private val log = LoggerFactory.getLogger(javaClass)
 

@@ -60,3 +60,11 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
+
+## job 식별 아이덴티티
+custom-worker:
+  simple-cron-worker:
+    id: simple-cron-worker-01
+
+
+
