@@ -24,36 +24,38 @@ class CommonJobListener : JobListener {
     }
 
     /**
-     * 잡이 실행할때 호출됨
+     * 잡이 실행할때 호출됨 (tobe -> was executed)
      */
-    override fun jobToBeExecuted(context: JobExecutionContext) {
+    override fun jobToBeExecuted(context: JobExecutionContext?) {
         loggingListen(TO_BE_EXECUTE, context)
     }
 
     /**
      * 잡이 실행되지 않았을 때(거부되었을 때) 호출됨
      */
-    override fun jobExecutionVetoed(context: JobExecutionContext) {
+    override fun jobExecutionVetoed(context: JobExecutionContext?) {
         loggingListen(EXECUTION_VETOED, context)
     }
 
     /**
-     * 잡이 실행되고 난 뒤 호출됨
+     * 잡이 실행되고 난 뒤 호출됨 (tobe -> was executed)
      */
-    override fun jobWasExecuted(context: JobExecutionContext, jobException: JobExecutionException) {
+    override fun jobWasExecuted(context: JobExecutionContext?, jobException: JobExecutionException?) {
         loggingListen(WAS_EXECUTED, context, jobException)
     }
 
-    private fun loggingListen(currentStatus: String, context: JobExecutionContext, jobException: JobExecutionException? = null) {
+    private fun loggingListen(currentStatus: String, context: JobExecutionContext? = null, jobException: JobExecutionException? = null) {
         val lines = StringBuilder()
         lines.appendLine()
-        lines.appendLine(":: listener $currentStatus start ====>")
-        lines.appendLine("- jobKey :: ${context.jobDetail.key}")
-        lines.appendLine("- jobData :: ${context.mergedJobDataMap}")
+        lines.appendLine("====> listener [$currentStatus] start ====>")
+        context?.also {
+            lines.appendLine("- jobKey :: ${context.jobDetail.key}")
+            lines.appendLine("- jobData :: ${context.mergedJobDataMap}")
+        }
         jobException?.also { ex ->
             lines.appendLine("- exception-message : ${ex.message}")
         }
-        lines.appendLine(":: listener $currentStatus end ====>")
+        lines.appendLine("====> listener [$currentStatus] end ====>")
         lines.appendLine()
 
         log.info(lines.toString())
