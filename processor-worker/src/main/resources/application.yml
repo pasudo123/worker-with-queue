@@ -7,12 +7,15 @@ server:
   port: 44440
 
 spring:
-
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://dockerhost:13350/testdb
     username: root
     password: rootpass
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+    hikari:
+      maximum-pool-size: 5 # hikari 가 커넥션 풀에 최대로 가질 수 있는 사이즈
+
 
   quartz:
     # job-store-type: memory
@@ -31,7 +34,6 @@ spring:
       org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
       org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
       org.quartz.jobStore.dataSource: quartzDataSource
-      # org.quartz.jobStore.isClustered: true
 
       # dataSource
       org.quartz.dataSource.quartzDataSource.driver: com.mysql.cj.jdbc.Driver
@@ -41,9 +43,8 @@ spring:
       org.quartz.dataSource.quartzDataSource.provider: hikaricp # hikaricp 없으면 다른 provider 를 임포트 해주던가 해야함. (아니면 기본으로..)
 
       # dataSource 를 hikari 로 사용하면 관련 설정도 같이 쓸 수 있다. : https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
-      # org.quartz.dataSource.quartzDataSource.maximumPoolSize = 10
-      # org.quartz.dataSource.quartzDataSource.validationTimeout = 5000
-      # org.quartz.dataSource.quartzDataSource.idleTimeout = 0
+      # dataSource 가 connection pool 에서 생성할 수 있는 최대 커넥션 개수.
+      org.quartz.dataSource.quartzDataSource.maxConnections: 15
 
     jdbc:
       initialize-schema: never

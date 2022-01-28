@@ -2,7 +2,6 @@ package com.example.processorworker
 
 import com.example.processorworker.config.CustomWorkerProps
 import com.example.processorworker.sample.SampleJob
-import com.example.processorworker.sample.SampleJobVersion2
 import org.quartz.CronScheduleBuilder.cronSchedule
 import org.quartz.JobBuilder
 import org.quartz.JobDetail
@@ -10,8 +9,6 @@ import org.quartz.Scheduler
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.quartz.impl.matchers.EverythingMatcher.allJobs
-import org.quartz.impl.matchers.GroupMatcher.jobGroupEquals
-import org.quartz.impl.matchers.OrMatcher.or
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -31,22 +28,17 @@ class ProcessorWorkerApplication(
 
         // 잡을 만든다.
         val jobDetail = buildJobBuilder()
-        val jobDetailVersion2 = buildJobBuilderVersion2()
 
-        // TODO("실행이 되질 않는다..? -> why??")
         if (scheduler.checkExists(jobDetail.key)) {
             // 존재하기 때문에 db 에서 들고와서 해당 잡을 수행한다.
             val lines = StringBuilder()
+            scheduler.deleteJob(jobDetail.key)
             lines.appendLine()
-            lines.appendLine("++++++++++++++ exist jobKey : ${jobDetail.key} ++++++++++++++")
-            lines.appendLine("job deleted :: ${scheduler.deleteJob(jobDetail.key)}")
-            scheduler.addJob(jobDetailVersion2, true, true)
+            lines.appendLine("[1] : ${jobDetail.key} ++++++++++++++")
             log.info(lines.toString())
-            return
         }
 
-        log.info("++++++++++++++ none exist jobKey : ${jobDetail.key} ++++++++++++++")
-        // 미존재하는 경우만 새롭게 잡을 만든다.
+        log.info("[2] : ${jobDetail.key} ++++++++++++++")
         val cronTrigger = this.buildTrigger(jobDetail)
         scheduler.scheduleJob(jobDetail, cronTrigger)
     }
@@ -59,20 +51,12 @@ class ProcessorWorkerApplication(
             .build()
     }
 
-    private fun buildJobBuilderVersion2(): JobDetail {
-        return JobBuilder.newJob(SampleJobVersion2::class.java)
-            .withIdentity(workerProps.simpleCronWorker.id, "sample job")
-            .withDescription("sample job desc")
-            .storeDurably(true)
-            .build()
-    }
-
     private fun buildTrigger(jobDetail: JobDetail): Trigger {
 
         return TriggerBuilder.newTrigger()
             .withIdentity(jobDetail.key.name, "sample trigger")
             .withDescription("sample trigger desc")
-            .withSchedule(cronSchedule("0/3 * * * * ?"))
+            .withSchedule(cronSchedule("0/10 * * * * ?"))
             .build()
     }
 

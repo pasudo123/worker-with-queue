@@ -50,7 +50,7 @@ class CommonJobListener : JobListener {
         lines.appendLine("====> listener [$currentStatus] start ====>")
         context?.also {
             lines.appendLine("- jobKey :: ${context.jobDetail.key}")
-            lines.appendLine("- jobData :: ${context.mergedJobDataMap}")
+            lines.appendLine("- jobData :: ${context.mergedJobDataMap.toMap()}")
         }
         jobException?.also { ex ->
             lines.appendLine("- exception-message : ${ex.message}")
