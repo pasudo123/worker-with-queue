@@ -1,7 +1,7 @@
 
 logging:
   level:
-    org.quartz: DEBUG
+    org.quartz: INFO
 
 server:
   port: 44440
@@ -18,22 +18,29 @@ spring:
 
 
   quartz:
+    jdbc:
+      initialize-schema: always
+      platform: mysql
+
     # job-store-type: memory
     job-store-type: jdbc
-    scheduler-name: p-quartz-scheduler
+    scheduler-name: pasudo-scheduler-1
     properties:
       # http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/#choose-a-topic: 참고
       org.quartz.threadPool.threadCount: 5
 
       # scheduler
-      org.quartz.scheduler.threadName: ppp-thr
-      org.quartz.scheduler.instanceName: ppp-ins
+      org.quartz.scheduler.threadName: psd-thr
+      org.quartz.scheduler.instanceName: psd-ins
       org.quartz.scheduler.instanceId: AUTO
 
       # jobStore
       org.quartz.jobStore.class: org.quartz.impl.jdbcjobstore.JobStoreTX
       org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
       org.quartz.jobStore.dataSource: quartzDataSource
+      org.quartz.jobStore.useProperties: true # jobDetail 의 jobData 컬럼을 텍스트로 넣기 위한 옵션
+      org.quartz.jobStore.isClustered: true # 쿼츠 클러스터 설정 여부
+      org.quartz.jobStore.clusterCheckinInterval: 10000 # milli sec 주기로 클러스터 상태여부 체크
 
       # dataSource
       org.quartz.dataSource.quartzDataSource.driver: com.mysql.cj.jdbc.Driver
@@ -45,12 +52,7 @@ spring:
       # dataSource 를 hikari 로 사용하면 관련 설정도 같이 쓸 수 있다. : https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
       # dataSource 가 connection pool 에서 생성할 수 있는 최대 커넥션 개수.
       org.quartz.dataSource.quartzDataSource.maxConnections: 15
-
-    jdbc:
-      initialize-schema: never
-      platform: mysql
-
-
+      org.quartz.dataSource.quartzDataSource.hikari.jdbc-url: jdbc:mysql://dockerhost:13350/testdb
 
   mail:
     host: smtp.naver.com
@@ -65,7 +67,13 @@ spring:
 ## job 식별 아이덴티티
 custom-worker:
   simple-cron-worker:
-    id: simple-cron-worker-01
+    id: simple-test-03
+    job-group: simple-job-group
+    job-desc: "테스트를 위한 잡명세"
+    trigger-group: simple-trigger-group
+    trigger-desc: "테스트를 위한 트리거 명세"
+    cron-expression: "0/5 * * * * ?"
+
 
 
 
